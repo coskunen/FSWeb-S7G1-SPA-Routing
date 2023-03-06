@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import {Switch, Route, Link, useParam, Navigate } from "react-router-dom";
+import FilmListesi from "./Filmler/FilmListesi";
+import Film from "./Filmler/Film";
 import KaydedilenlerListesi from './Filmler/KaydedilenlerListesi';
 
 export default function App () {
@@ -12,6 +14,7 @@ export default function App () {
       axios
         .get('http://localhost:5001/api/filmler') // Burayı Postman'le çalışın
         .then(response => {
+          setMovieList(response.data);
           // Bu kısmı log statementlarıyla çalışın
           // ve burdan gelen response'u 'movieList' e aktarın
         })
@@ -30,7 +33,16 @@ export default function App () {
     <div>
       <KaydedilenlerListesi list={[ /* Burası esnek */]} />
 
-      <div>Bu Div'i kendi Routelarınızla değiştirin</div>
+      <div>kkkk
+       <Switch>
+        <Route path={"/filmler/:id"}>
+          <Film saveCallBack = {KaydedilenlerListesineEkle}/>
+        </Route>
+        <Route path={"/"}>
+          <FilmListesi movies={movieList}/>
+        </Route>
+       </Switch>
+      </div>
     </div>
   );
 }
